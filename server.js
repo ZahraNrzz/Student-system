@@ -5,6 +5,15 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
+const Reservation = require('./models/Reservation');
+const Finance = require('./models/Finance');
+const Food = require('./models/Foods');
+
+// --- Connect to DB
+const connectToDatabase = require('./db');
+const Student = require('./models/Student');
+connectToDatabase();
+
 const hostname = '127.0.0.1';
 const port = 3001;
 
@@ -21,13 +30,13 @@ const serveHtml = (filename, res) => {
     }
   });
 };
-
 // --- Helper: Serve static files (CSS, images, etc.)
 const serveStaticFile = (req, res) => {
   const filePath = path.join(__dirname, 'public', req.url);
   const ext = path.extname(filePath);
   const contentTypes = {
     '.css': 'text/css',
+    '.js': 'application/javascript',
     '.png': 'image/png',
     '.jpg': 'image/jpeg',
     '.jpeg': 'image/jpeg',
@@ -64,46 +73,43 @@ const server = http.createServer((req, res) => {
     if (req.url === '/Signup') return serveHtml('Signup.html', res);
     if (req.url === '/Dashboard') return serveHtml('Dashboard.html', res);
     if (req.url === '/Profile') return serveHtml('Profile.html', res);
+    if (req.url === '/FoodReservation') return serveHtml('FoodReservation.html', res);
 
-    if (req.url.endsWith('.css') || req.url.match(/\.(png|jpg|jpeg|gif|svg)$/)) return serveStaticFile(req, res);
+
+    if (req.url.endsWith('.css') || req.url.match(/\.(png|js|jpg|jpeg|gif|svg)$/)) return serveStaticFile(req, res);
 
     // GetProfile
     if (req.url === '/GetProfile') {
       (async () => {
         try {
-          const { connectToDatabase } = require('./db');
-          const db = await connectToDatabase();
-          const users = db.collection('users');
-
           const currentUsername = getUsernameFromCookies(req.headers.cookie);
           if (!currentUsername) {
             res.writeHead(401, { 'Content-Type': 'application/json' });
             return res.end(JSON.stringify({ message: 'Unauthorized' }));
           }
 
-          const user = await users.findOne({ username: currentUsername });
-          if (user) {
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({
-              username: user.username,
-              email: user.email,
-              password: user.password,
-              avatarBase64: user.avatarBase64 || null
-            }));
-          } else {
+          const user = await Student.findOne({ username: currentUsername });
+          if (!user) {
             res.writeHead(404, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ message: 'User not found' }));
+            return res.end(JSON.stringify({ message: 'User not found' }));
           }
 
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            username: user.username,
+            email: user.email,
+            password: user.password,
+            avatarBase64: user.avatarBase64 || null
+          }));
         } catch (err) {
           res.writeHead(500, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ message: 'خطا در بارگیری اطلاعات', error: err.message }));
+          res.end(JSON.stringify({ message: 'خطا در دریافت پروفایل', error: err.message }));
         }
       })();
       return;
     }
-  }
 
+  }
   // === Signup ===
   if (req.url === '/Signup' && req.method === 'POST') {
     let body = '';
@@ -111,31 +117,29 @@ const server = http.createServer((req, res) => {
     req.on('end', async () => {
       try {
         const { username, email, password } = JSON.parse(body);
-        const { connectToDatabase } = require('./db');
-        const db = await connectToDatabase();
-        const users = db.collection('users');
+        const existingUser = await Student.findOne({ $or: [{ username }, { email }] });
 
-        const existingUser = await users.findOne({ username });
-        const existingEmail = await users.findOne({ email });
-
-        if (existingUser || existingEmail) {
+        if (existingUser) {
+          const msg = existingUser.username === username
+            ? 'این نام کاربری در سامانه موجود می‌باشد!'
+            : 'این ایمیل در سامانه موجود می‌باشد!';
           res.writeHead(400, { 'Content-Type': 'application/json' });
-          return res.end(JSON.stringify({
-            message: existingUser ? 'این نام کاربری در سامانه موجود می‌باشد!' : 'این ایمیل در سامانه موجود می‌باشد!'
-          }));
+          return res.end(JSON.stringify({ message: msg }));
         }
 
-        const result = await users.insertOne({ username, email, password });
-        res.writeHead(201, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ message: 'ثبت‌نام موفقیت‌آمیز بود!', userId: result.insertedId }));
+        const newUser = new Student({ username, email, password });
+        await newUser.save();
 
+        res.writeHead(201, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'ثبت‌نام موفقیت‌آمیز بود!' }));
       } catch (err) {
         res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ message: 'ثبت‌نام موفق نبود', error: err.message }));
+        res.end(JSON.stringify({ message: 'ثبت‌نام ناموفق بود', error: err.message }));
       }
     });
     return;
   }
+
 
   // === Login ===
   if (req.url === '/Login' && req.method === 'POST') {
@@ -144,22 +148,18 @@ const server = http.createServer((req, res) => {
     req.on('end', async () => {
       try {
         const { username, password } = JSON.parse(body);
-        const { connectToDatabase } = require('./db');
-        const db = await connectToDatabase();
-        const users = db.collection('users');
+        const user = await Student.findOne({ username, password });
 
-        const user = await users.findOne({ username, password });
-        if (user) {
-          res.writeHead(200, {
-            'Content-Type': 'application/json',
-            'Set-Cookie': `username=${user.username}; HttpOnly`
-          });
-          res.end(JSON.stringify({ message: 'ورود موفقیت‌آمیز بود', username: user.username }));
-        } else {
+        if (!user) {
           res.writeHead(401, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ message: 'نام کاربری یا رمز اشتباه است' }));
+          return res.end(JSON.stringify({ message: 'نام کاربری یا رمز اشتباه است' }));
         }
 
+        res.writeHead(200, {
+          'Content-Type': 'application/json',
+          'Set-Cookie': `username=${user.username}; HttpOnly`
+        });
+        res.end(JSON.stringify({ message: 'ورود موفقیت‌آمیز بود', username: user.username }));
       } catch (err) {
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ message: 'خطا در ورود', error: err.message }));
@@ -167,6 +167,7 @@ const server = http.createServer((req, res) => {
     });
     return;
   }
+
 
   // === UpdateProfile ===
   if (req.url === '/UpdateProfile' && req.method === 'POST') {
@@ -177,23 +178,20 @@ const server = http.createServer((req, res) => {
       }
 
       try {
-        const { connectToDatabase } = require('./db');
-        const db = await connectToDatabase();
-        const users = db.collection('users');
-
         const currentUsername = getUsernameFromCookies(req.headers.cookie);
         if (!currentUsername) {
           res.writeHead(401, { 'Content-Type': 'application/json' });
           return res.end(JSON.stringify({ message: 'Unauthorized' }));
         }
 
-        const updateData = {};
-        if (req.body?.username) updateData.username = req.body.username;
-        if (req.body?.email) updateData.email = req.body.email;
-        if (req.body?.password) updateData.password = req.body.password;
-        if (req.file) updateData.avatarBase64 = req.file.buffer.toString('base64');
+        const updateData = {
+          ...(req.body?.username && { username: req.body.username }),
+          ...(req.body?.email && { email: req.body.email }),
+          ...(req.body?.password && { password: req.body.password }),
+          ...(req.file && { avatarBase64: req.file.buffer.toString('base64') })
+        };
 
-        await users.updateOne({ username: currentUsername }, { $set: updateData });
+        await Student.updateOne({ username: currentUsername }, { $set: updateData });
 
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({
@@ -203,17 +201,137 @@ const server = http.createServer((req, res) => {
 
       } catch (err) {
         res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ message: 'خطا در ذخیره اطلاعات', error: err.message }));
+        res.end(JSON.stringify({ message: 'خطا در بروزرسانی پروفایل', error: err.message }));
       }
     });
     return;
   }
 
+  // === FoodReservation ===
+  if (req.url === '/ReserveFood' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk.toString());
+    req.on('end', async () => {
+      try {
+        const currentUsername = getUsernameFromCookies(req.headers.cookie);
+        if (!currentUsername) {
+          res.writeHead(401, { 'Content-Type': 'application/json' });
+          return res.end(JSON.stringify({ message: 'Unauthorized' }));
+        }
+
+        const user = await Student.findOne({ username: currentUsername });
+        const { date, food, restaurant } = JSON.parse(body);
+
+        const finance = await Finance.findOne({ userId: user._id });
+        if (!finance || finance.balance < food.price) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          return res.end(JSON.stringify({ message: 'موجودی کافی نیست!' }));
+        }
+
+        finance.balance -= food.price;
+        await finance.save();
+
+        const newReservation = new Reservation({
+          userId: user._id,
+          date,
+          food,
+          restaurant,
+        });
+
+        await newReservation.save();
+        res.writeHead(201, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'رزرو با موفقیت انجام شد' }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'خطا در رزرو غذا', error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // === RechargeBalance ===
+  if (req.url === '/RechargeBalance' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk.toString());
+    req.on('end', async () => {
+      try {
+        const currentUsername = getUsernameFromCookies(req.headers.cookie);
+        if (!currentUsername) {
+          res.writeHead(401, { 'Content-Type': 'application/json' });
+          return res.end(JSON.stringify({ message: 'Unauthorized' }));
+        }
+
+        const user = await Student.findOne({ username: currentUsername });
+        const { amount } = JSON.parse(body);
+
+        let finance = await Finance.findOne({ userId: user._id });
+        if (!finance) {
+          finance = new Finance({ userId: user._id, balance: 0 });
+        }
+
+        finance.balance += Number(amount);
+        await finance.save();
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'موجودی افزایش یافت', balance: finance.balance }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'خطا در افزایش موجودی', error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // === GetReservations ===
+  if (req.url === '/GetReservations' && req.method === 'GET') {
+    (async () => {
+      try {
+        const currentUsername = getUsernameFromCookies(req.headers.cookie);
+        if (!currentUsername) {
+          res.writeHead(401, { 'Content-Type': 'application/json' });
+          return res.end(JSON.stringify({ message: 'Unauthorized' }));
+        }
+
+        const user = await Student.findOne({ username: currentUsername });
+        const reservations = await Reservation.find({ userId: user._id });
+        const finance = await Finance.findOne({ userId: user._id });
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+          balance: finance?.balance || 0,
+          reservations
+        }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'خطا در دریافت اطلاعات', error: err.message }));
+      }
+    })();
+    return;
+  }
+
+  // === GetFoods ===
+  if (req.url === '/GetFoods' && req.method === 'GET') {
+    (async () => {
+      try {
+        const foods = await Food.find(); // همه غذاها
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(foods));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'خطا در دریافت لیست غذاها' }));
+      }
+    })();
+    return;
+  }
+
+
+
+
   // === Fallback ===
   res.writeHead(404, { 'Content-Type': 'text/plain' });
   res.end('Page Not Found');
-});
+  });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+  server.listen(port, hostname, () => {
+    console.log(`Server running at http://${hostname}:${port}/`);
 });
