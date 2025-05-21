@@ -494,18 +494,3 @@ body.dashboard-body {
   white-space: nowrap;
 }
 
-/* ریسپانسیو */
-@media screen and (max-width: 600px) {
-  .food-reservation-section {
-    padding: 1rem;
-  }
-
-  .food-list {
-    flex-direction: column;
-  }
-
-  .reservation-table th, .reservation-table td {
-    font-size: 0.9rem;
-    padding: 0.5rem;
-  }
-}
