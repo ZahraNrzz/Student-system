@@ -75,45 +75,42 @@ function loadFoodReservation() {
         });
       });
 
-      document.addEventListener('DOMContentLoaded', function () {
-        const restaurantSelect = document.getElementById('restaurant');
-        const foodListDiv = document.getElementById('food-list');
+      const restaurantSelect = document.getElementById('restaurant');
+      const foodListDiv = document.getElementById('food-list');
 
-        // بارگذاری اولیه غذاهای رستوران اول (در صورت وجود)
-        if (restaurantSelect.value) {
-          loadFoods(restaurantSelect.value);
-        }
+      if (restaurantSelect.value) {
+        loadFoods(restaurantSelect.value);
+      }
 
-        restaurantSelect.addEventListener('change', function () {
-          const selectedRestaurant = this.value;
-          loadFoods(selectedRestaurant);
-        });
-
-        async function loadFoods(restaurant) {
-          if (!restaurant) {
-            foodListDiv.innerHTML = '';
-            return;
-          }
-
-          try {
-            const res = await fetch(`/GetFoods?restaurant=${encodeURIComponent(restaurant)}`);
-            const foods = await res.json();
-
-            foodListDiv.innerHTML = foods.map(food => `
-              <label class="food-item">
-                <input type="radio" name="food" value='${JSON.stringify(food)}' required>
-                <img src="/Images/${food.image}" alt="${food.name}" width="80" height="80">
-                <div>
-                  <strong>${food.name}</strong><br>
-                  ${food.price.toLocaleString()} تومان
-                </div>
-              </label>
-            `).join('');
-          } catch (err) {
-            console.error('خطا در واکشی غذاها:', err);
-          }
-        }
+      restaurantSelect.addEventListener('change', function () {
+        const selectedRestaurant = this.value;
+        loadFoods(selectedRestaurant);
       });
+
+      async function loadFoods(restaurant) {
+        if (!restaurant) {
+          foodListDiv.innerHTML = '';
+          return;
+        }
+
+        try {
+          const res = await fetch(`/GetFoods?restaurant=${encodeURIComponent(restaurant)}`);
+          const foods = await res.json();
+
+          foodListDiv.innerHTML = foods.map(food => `
+            <label class="food-item">
+              <input type="radio" name="food" value='${JSON.stringify(food)}' required>
+              <img src="/Images/${food.image}" alt="${food.name}" width="80" height="80">
+              <div>
+                <strong>${food.name}</strong><br>
+                ${food.price.toLocaleString()} تومان
+              </div>
+            </label>
+          `).join('');
+        } catch (err) {
+          console.error('خطا در واکشی غذاها:', err);
+        }
+      }
 
 
       // fetch('/GetFoods')
@@ -189,7 +186,6 @@ function loadFoodReservation() {
       }, 100);
     });
 }
-
 
 function loadContent(title, content) {
     main.innerHTML = `<h1>${title}</h1><p>${content}</p>`;
