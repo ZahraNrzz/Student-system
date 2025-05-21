@@ -330,6 +330,50 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // === Cancel Reservation ===
+  if (req.method === 'DELETE' && req.url.startsWith('/cancel-reservation/')) {
+    const id = req.url.split('/').pop();
+    const currentUsername = getUsernameFromCookies(req.headers.cookie);
+
+    if (!currentUsername) {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ message: 'Unauthorized' }));
+    }
+
+    (async () => {
+      try {
+        const user = await Student.findOne({ username: currentUsername });
+        if (!user) {
+          res.writeHead(404, { 'Content-Type': 'application/json' });
+          return res.end(JSON.stringify({ message: 'User not found' }));
+        }
+
+        const reservation = await Reservation.findOne({ _id: id, userId: user._id });
+        if (!reservation) {
+          res.writeHead(404, { 'Content-Type': 'application/json' });
+          return res.end(JSON.stringify({ message: 'رزرو یافت نشد' }));
+        }
+
+        const finance = await Finance.findOne({ userId: user._id });
+        if (finance) {
+          finance.balance += reservation.food.price;
+          await finance.save();
+        }
+
+        await Reservation.deleteOne({ _id: id });
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'رزرو با موفقیت لغو شد' }));
+      } catch (err) {
+        console.error('Error canceling reservation:', err);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'خطا در لغو رزرو', error: err.message }));
+      }
+    })();
+    return;
+  }
+
+
   // === Fallback ===
   res.writeHead(404, { 'Content-Type': 'text/plain' });
   res.end('Page Not Found');

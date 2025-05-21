@@ -66,13 +66,42 @@ function loadFoodReservation() {
       })
       .then(res => res.json())
       .then(data => {
-        document.getElementById('balance').textContent = data.balance.toLocaleString();
+      document.getElementById('current-balance').textContent = data.balance.toLocaleString();
 
         const reservationList = document.getElementById('reservationList');
         reservationList.innerHTML = '';
         data.reservations.forEach(r => {
-          reservationList.innerHTML += `<li>${r.date} | ${r.food.name} (${r.food.price.toLocaleString()} تومان) - ${r.restaurant}</li>`;
+          reservationList.innerHTML += `
+            <tr>
+              <td>${r.date}</td>
+              <td>${r.food.name} (${r.food.price.toLocaleString()} تومان)</td>
+              <td>${r.restaurant}</td>
+              <td>
+                <button class="cancel-btn" data-id="${r._id}">❌ لغو</button>
+              </td>
+            </tr>
+          `;
         });
+
+        setTimeout(() => {
+          document.querySelectorAll('.cancel-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const id = btn.dataset.id;
+              if (confirm('آیا از لغو این رزرو مطمئن هستید؟')) {
+                fetch(`/cancel-reservation/${id}`, {
+                  method: 'DELETE',
+                  credentials: 'include'
+                })
+                .then(res => res.json())
+                .then(result => {
+                  alert(result.message || 'رزرو با موفقیت لغو شد');
+                  loadFoodReservation(); 
+                })
+                .catch(err => console.error(err));
+              }
+            });
+          });
+        }, 100);
       });
 
       const restaurantSelect = document.getElementById('restaurant');
@@ -112,55 +141,32 @@ function loadFoodReservation() {
         }
       }
 
+      setTimeout(() => {
+        const increaseButton = document.getElementById('increase-balance');
+        increaseButton.addEventListener('click', () => {
+          const amount = prompt('مقدار افزایش موجودی (تومان):');
+          if (!amount || isNaN(amount) || Number(amount) <= 0) {
+            alert('مقدار وارد شده معتبر نیست!');
+            return;
+          }
 
-      // fetch('/GetFoods')
-      //   .then(res => res.json())
-      //   .then(foods => {
-      //     const foodList = document.getElementById('food-list');
-      //     foodList.innerHTML = '';
-      //     foods.forEach(food => {
-      //       const div = document.createElement('div');
-      //       div.className = 'food-item';
-      //       div.innerHTML = `
-      //         <input type="radio" name="food" value='${JSON.stringify(food)}' required>
-      //         <img src="/Images/${food.image}" alt="${food.name}" />
-      //         <span>${food.name} - ${food.price} تومان</span>
-      //       `;
-      //       foodList.appendChild(div);
-      //     });
-      //   });
-
-      //   document.addEventListener('DOMContentLoaded', function () {
-      //     const restaurantSelect = document.getElementById('restaurant');
-      //     const foodListDiv = document.getElementById('food-list');
-
-      //     restaurantSelect.addEventListener('change', async function () {
-      //       const selectedRestaurant = this.value;
-
-      //       if (!selectedRestaurant) {
-      //         foodListDiv.innerHTML = '';
-      //         return;
-      //       }
-
-      //       try {
-      //         const res = await fetch(`/api/foods?restaurant=${encodeURIComponent(selectedRestaurant)}`);
-      //         const foods = await res.json();
-
-      //         foodListDiv.innerHTML = foods.map(food => `
-      //           <label class="food-item">
-      //             <input type="radio" name="food" value="${food.name}" required>
-      //             <img src="/Images/${food.image}" alt="${food.name}" width="80" height="80">
-      //             <div>
-      //               <strong>${food.name}</strong><br>
-      //               ${food.price.toLocaleString()} تومان
-      //             </div>
-      //           </label>
-      //         `).join('');
-      //       } catch (err) {
-      //         console.error('خطا در واکشی غذاها:', err);
-      //       }
-      //     });
-      //   });
+          fetch('/RechargeBalance', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ amount })
+          })
+          .then(res => res.json())
+          .then(data => {
+            alert(data.message || 'موجودی با موفقیت افزایش یافت');
+            document.getElementById('current-balance').textContent = Number(data.balance).toLocaleString();
+          })
+          .catch(err => {
+            console.error('خطا در افزایش موجودی:', err);
+            alert('افزایش موجودی با خطا مواجه شد');
+          });
+        });
+      }, 100);
 
 
       setTimeout(() => {
@@ -222,8 +228,6 @@ document.querySelectorAll('.dashboard-sidebar ul li').forEach(item => {
     }
     });
 });
-
-
 
 window.addEventListener('DOMContentLoaded', () => {
     const username = localStorage.getItem('currentUsername');

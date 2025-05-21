@@ -38,7 +38,6 @@ const foods = [
 
 (async () => {
   try {
-    // await Food.deleteMany(); // پاک کردن غذاهای قبلی (اختیاری)
     await Food.insertMany(foods);
     console.log('🍽️ غذاها با موفقیت اضافه شدند');
   } catch (err) {
