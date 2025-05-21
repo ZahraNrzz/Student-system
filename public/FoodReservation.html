@@ -1,0 +1,50 @@
+<div class="food-reservation-section">
+  <h2>🍽️ رزرو غذا</h2>
+
+  <div class="finance-box">
+    <strong>موجودی فعلی: </strong><span id="current-balance">0</span> تومان
+    <button id="increase-balance">افزایش موجودی</button>
+  </div>
+
+  <form id="foodReservationForm" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="restaurant">رستوران:</label>
+      <select id="restaurant" name="restaurant" required>
+        <option value="">انتخاب کنید</option>
+        <option value="رستوران مرکزی">رستوران مرکزی</option>
+        <option value="رستوران گیاهی">رستوران گیاهی</option>
+        <option value="رستوران شبانه">رستوران شبانه</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="date">تاریخ:</label>
+      <input type="date" id="date" name="date" required>
+    </div>
+
+    <div class="form-group">
+      <label>غذا:</label>
+      <div id="food-list" class="food-list">
+      </div>
+      <div id="food-list" class="food-list">
+      </div>
+
+    </div>
+
+    <button type="submit">➕ افزودن به رزرو</button>
+  </form>
+
+  <h3>📋 لیست رزروها</h3>
+  <table class="reservation-table">
+    <thead>
+      <tr>
+        <th>تاریخ</th>
+        <th>غذا</th>
+        <th>رستوران</th>
+        <th>عملیات</th>
+      </tr>
+    </thead>
+    <tbody id="reservationList">
+    </tbody>
+  </table>
+</div> 

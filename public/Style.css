@@ -198,13 +198,14 @@ body.dashboard-body {
 .dashboard-main h1 {
   font-size: 2rem;
   margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
   color: #5e71ff;
   text-align: right;
 }
 
 /* --- Profile Form --- */
 .dashboard-profile-form {
-  max-width: 500px;
+  max-width: 600px;
   margin: auto;
   background-color: #f9f9f9;
   padding: 1rem 2rem;
@@ -307,4 +308,164 @@ body.dashboard-body {
 .custom-file-upload .icon {
   font-size: 1.3rem;
   color: #5e71ff;
+}
+
+/* Food Reservation Styling*/
+.food-reservation-section {
+  background-color: #f9f9f9;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 600px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  direction: rtl;
+  text-align: right;
+}
+
+.food-reservation-section h2 {
+  color: #5e71ff;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.food-reservation-section .finance-box {
+  background-color: #f0f4ff;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  color: #333;
+  box-shadow: 0 4px 10px #00000014;
+}
+
+#increase-balance {
+  background-color: #9e77cc;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#increase-balance:hover {
+  background-color: #7b5eb0;
+}
+
+#foodReservationForm {
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.form-group select,
+.form-group input[type="date"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px #00000014;
+}
+
+.food-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.food-list label {
+  background-color: #f3f3f3;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px #00000014;
+}
+
+.food-list input[type="checkbox"] {
+  margin-left: 8px;
+}
+
+#foodReservationForm button[type="submit"] {
+  background-color: #5e71ff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#foodReservationForm button[type="submit"]:hover {
+  background-color: #3f59e0;
+}
+
+.food-reservation-section h3 {
+  color: #333;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 0.5rem;
+}
+
+.reservation-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 4px 10px #00000014;
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.reservation-table th,
+.reservation-table td {
+  padding: 0.8rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.reservation-table th {
+  background-color: #f0f4ff;
+  color: #5e71ff;
+}
+
+.reservation-table td:last-child button {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.reservation-table td:last-child button:hover {
+  background-color: #e74c3c;
+}
+
+/* ریسپانسیو */
+@media screen and (max-width: 600px) {
+  .food-reservation-section {
+    padding: 1rem;
+  }
+
+  .food-list {
+    flex-direction: column;
+  }
+
+  .reservation-table th, .reservation-table td {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
 }
