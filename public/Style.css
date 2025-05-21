@@ -14,7 +14,7 @@ html {
 }
   
   body.index-body {
-    background-image: url('Back_img.jpeg');
+    background-image: url('Images/Back_img.jpeg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;

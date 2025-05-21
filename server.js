@@ -1,6 +1,7 @@
 const http = require('node:http');
 const fs = require('fs');
 const path = require('path');
+const url = require('url');
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -310,10 +311,14 @@ const server = http.createServer((req, res) => {
   }
 
   // === GetFoods ===
-  if (req.url === '/GetFoods' && req.method === 'GET') {
+  if (req.url.startsWith('/GetFoods') && req.method === 'GET') {
+    const parsedUrl = url.parse(req.url, true);
+    const restaurant = parsedUrl.query.restaurant;
+
     (async () => {
       try {
-        const foods = await Food.find(); // همه غذاها
+        const query = restaurant ? { restaurant } : {};
+        const foods = await Food.find(query); 
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(foods));
       } catch (err) {
@@ -321,11 +326,9 @@ const server = http.createServer((req, res) => {
         res.end(JSON.stringify({ message: 'خطا در دریافت لیست غذاها' }));
       }
     })();
+
     return;
   }
-
-
-
 
   // === Fallback ===
   res.writeHead(404, { 'Content-Type': 'text/plain' });

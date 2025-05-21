@@ -75,6 +75,97 @@ function loadFoodReservation() {
         });
       });
 
+      document.addEventListener('DOMContentLoaded', function () {
+        const restaurantSelect = document.getElementById('restaurant');
+        const foodListDiv = document.getElementById('food-list');
+
+        // بارگذاری اولیه غذاهای رستوران اول (در صورت وجود)
+        if (restaurantSelect.value) {
+          loadFoods(restaurantSelect.value);
+        }
+
+        restaurantSelect.addEventListener('change', function () {
+          const selectedRestaurant = this.value;
+          loadFoods(selectedRestaurant);
+        });
+
+        async function loadFoods(restaurant) {
+          if (!restaurant) {
+            foodListDiv.innerHTML = '';
+            return;
+          }
+
+          try {
+            const res = await fetch(`/GetFoods?restaurant=${encodeURIComponent(restaurant)}`);
+            const foods = await res.json();
+
+            foodListDiv.innerHTML = foods.map(food => `
+              <label class="food-item">
+                <input type="radio" name="food" value='${JSON.stringify(food)}' required>
+                <img src="/Images/${food.image}" alt="${food.name}" width="80" height="80">
+                <div>
+                  <strong>${food.name}</strong><br>
+                  ${food.price.toLocaleString()} تومان
+                </div>
+              </label>
+            `).join('');
+          } catch (err) {
+            console.error('خطا در واکشی غذاها:', err);
+          }
+        }
+      });
+
+
+      // fetch('/GetFoods')
+      //   .then(res => res.json())
+      //   .then(foods => {
+      //     const foodList = document.getElementById('food-list');
+      //     foodList.innerHTML = '';
+      //     foods.forEach(food => {
+      //       const div = document.createElement('div');
+      //       div.className = 'food-item';
+      //       div.innerHTML = `
+      //         <input type="radio" name="food" value='${JSON.stringify(food)}' required>
+      //         <img src="/Images/${food.image}" alt="${food.name}" />
+      //         <span>${food.name} - ${food.price} تومان</span>
+      //       `;
+      //       foodList.appendChild(div);
+      //     });
+      //   });
+
+      //   document.addEventListener('DOMContentLoaded', function () {
+      //     const restaurantSelect = document.getElementById('restaurant');
+      //     const foodListDiv = document.getElementById('food-list');
+
+      //     restaurantSelect.addEventListener('change', async function () {
+      //       const selectedRestaurant = this.value;
+
+      //       if (!selectedRestaurant) {
+      //         foodListDiv.innerHTML = '';
+      //         return;
+      //       }
+
+      //       try {
+      //         const res = await fetch(`/api/foods?restaurant=${encodeURIComponent(selectedRestaurant)}`);
+      //         const foods = await res.json();
+
+      //         foodListDiv.innerHTML = foods.map(food => `
+      //           <label class="food-item">
+      //             <input type="radio" name="food" value="${food.name}" required>
+      //             <img src="/Images/${food.image}" alt="${food.name}" width="80" height="80">
+      //             <div>
+      //               <strong>${food.name}</strong><br>
+      //               ${food.price.toLocaleString()} تومان
+      //             </div>
+      //           </label>
+      //         `).join('');
+      //       } catch (err) {
+      //         console.error('خطا در واکشی غذاها:', err);
+      //       }
+      //     });
+      //   });
+
+
       setTimeout(() => {
         document.getElementById('foodReservationForm').addEventListener('submit', function(event) {
           event.preventDefault();
@@ -136,22 +227,6 @@ document.querySelectorAll('.dashboard-sidebar ul li').forEach(item => {
     });
 });
 
-fetch('/GetFoods')
-  .then(res => res.json())
-  .then(foods => {
-    const foodList = document.getElementById('food-list');
-    foodList.innerHTML = '';
-    foods.forEach(food => {
-      const div = document.createElement('div');
-      div.className = 'food-item';
-      div.innerHTML = `
-        <input type="radio" name="food" value='${JSON.stringify(food)}' required>
-        <img src="/uploads/${food.image}" alt="${food.name}" />
-        <span>${food.name} - ${food.price} تومان</span>
-      `;
-      foodList.appendChild(div);
-    });
-  });
 
 
 window.addEventListener('DOMContentLoaded', () => {
