@@ -1,0 +1,310 @@
+@font-face {
+  font-family: 'Dana', Arial, Helvetica, sans-serif;
+  src: url('../Fonts/Dana-Medium.woff2') format('woff2');
+
+}
+
+* {
+    box-sizing: border-box;
+    font-family: Dana;
+  }
+
+html {
+  font-size: 16px;
+}
+  
+  body.index-body {
+    background-image: url('Back_img.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  } 
+
+  body.login-body , body.signup-body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #9e77cc, #5e71ff);
+  }
+  
+  #welcome {
+    margin: 0px 30px;
+    background-color: #7bb9f3ab;
+    padding: 50px 50px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 4px 20px #00000033;
+  }
+  
+  #welcome h1 {
+    color: #ffffff;
+    margin-bottom: 20px;
+  }
+  
+  #welcome button {
+    background-color: #f1f1f1;
+    color: #1c2f7c;
+    font-weight: 500;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 20px;
+    margin: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px #00000033;
+    transition: all 0.4s ease;
+  }
+  
+  @media only screen and (max-width: 400px) {
+    #welcome button {
+      width: 100%;
+      margin: 5px 0px;
+    }
+  }
+
+  #welcome button:hover {
+    background-color: #f7f0ce;
+    box-shadow: 0 4px 20px #00000070;
+  }
+  
+  .signup-box, .login-box {
+    margin: 0px 30px;
+    background: #ffffffd3;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px #00000054;
+    width: 300px;
+    text-align: center;
+  }
+  
+  .signup-box h2, .login-box h2 {
+    margin: 20px 0px;
+    color: #000000;
+  }
+  
+  .signup-box input[type="text"], .login-box input[type="text"],
+  .signup-box input[type="password"], .login-box input[type="password"],
+  .signup-box input[type="email"], .login-box input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    text-align: right;
+    margin: 10px 0;
+    box-shadow: 0 4px 20px #0000003a;
+    border: 0px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .signup-box button, .login-box button {
+    width: 100%;
+    padding: 10px;
+    background-color: #c58c4e;
+    box-shadow: 0 4px 20px #0000003a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-box button:hover, .signup-box button:hover {
+    background-color: #d1a26b;
+    box-shadow: 0 4px 20px #00000050;
+  }
+  
+
+
+  /*dashboard styling*/
+
+body.dashboard-body {
+  margin: 0;
+  direction: rtl;
+  background-color: #f4f4f4;
+  color: #333;
+  font-family: sans-serif;
+}
+
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* --- Sidebar --- */
+.dashboard-sidebar {
+  background-image: linear-gradient(102deg, rgb(94, 113, 255) 0%, rgb(158, 119, 204) 100%);
+  margin: 1rem;
+  border-radius: 1rem;
+  color: white;
+  padding: 2rem 1rem;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-shadow: -2px 0 10px #0000001f;
+}
+
+.dashboard-sidebar h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.6rem;
+}
+
+.dashboard-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dashboard-sidebar ul li {
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  background-color: #fff;
+  border: solid 1px #fff;
+  color: #716F87;
+  transition: background-color 0.3s;
+}
+
+.dashboard-sidebar ul li:hover {
+  background-color: rgba(126, 92, 176, 0);
+  border: solid 1px #fff;
+  color: #fff;
+}
+
+.dashboard-sidebar ul li.active {
+  background-color: #ffffffa9;
+  color: #5e71ff;
+  font-weight: bold;
+}
+
+/* --- Main Content --- */
+.dashboard-main {
+  flex: 1;
+  padding: 1rem 3rem;
+  background-color: #ffffff;
+}
+
+.dashboard-main h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #5e71ff;
+  text-align: right;
+}
+
+/* --- Profile Form --- */
+.dashboard-profile-form {
+  max-width: 500px;
+  margin: auto;
+  background-color: #f9f9f9;
+  padding: 1rem 2rem;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(69, 41, 102, 0.2);
+}
+
+.dashboard-profile-form h2 {
+  text-align: center;
+  color: #9e77cc;
+  margin-bottom: 1rem;
+}
+
+.dashboard-profile-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.dashboard-profile-form input[type="text"],
+.dashboard-profile-form input[type="email"],
+.dashboard-profile-form input[type="password"],
+.dashboard-profile-form input[type="file"] {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+/* --- Submit Button --- */
+.dashboard-profile-form button {
+  background-color: #1469eb;
+  color: white;
+  padding: 0.9rem 2rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.dashboard-profile-form button:hover {
+  background-color: #3f59e0;
+}
+
+/* --- Avatar & Upload Section --- */
+.avatar-upload-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.dashboard-avatar-box {
+  text-align: center;
+}
+
+.dashboard-avatar-box img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #9e77cc;
+}
+
+/* --- File Upload Button Custom --- */
+.custom-file-upload {
+  position: relative;
+  display: inline-block;
+}
+
+.custom-file-upload input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload label {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 6px 8px;
+  border: 2px dashed #aaa;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.custom-file-upload label:hover {
+  background-color: #e0e0e0;
+  border-color: #888;
+}
+
+.custom-file-upload .icon {
+  font-size: 1.3rem;
+  color: #5e71ff;
+}

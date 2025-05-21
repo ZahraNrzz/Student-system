@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signup Page</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="signup-body">
+  <div class="signup-box">
+    <h2>ثبت نام در سامانه دانشجویی</h2>
+    <form id="signupForm">
+      <input type="text" name="username" placeholder="نام کاربری" required />
+      <input type="email" name="email" placeholder="ایمیل" required />
+      <input type="password" name="password" placeholder="رمز ورود" required />
+      <button type="submit">ثبت نام</button>
+    </form>
+
+    <script>
+      const form = document.getElementById('signupForm');
+    
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault(); 
+    
+        const formData = new FormData(form);
+        const jsonData = {};
+        formData.forEach((value, key) => {
+          jsonData[key] = value;
+        });
+    
+        try {
+          const response = await fetch('/Signup', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+          });
+    
+          const result = await response.json();
+          alert(result.message);
+
+          if (response.ok) {
+            window.location.href = '/Login';
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('ثبت نام ناموفق!');
+        }
+      });
+    </script>
+    
+  </div>
+</body>
+</html>

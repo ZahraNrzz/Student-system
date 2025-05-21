@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Profile Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="dashboard-body">
+  <div class="dashboard-container">
+
+    <aside class="dashboard-sidebar">
+      <h2>🌟 داشبرد</h2>
+      <ul>
+        <li id="food-reservation">🍽️ رزرو غذا</li>
+        <li id="requests">📄 درخواست‌ها</li>
+        <li id="semester-courses">📚 دروس نیمسال</li>
+        <li id="payments">💰 پرداخت‌ها و امورمالی</li>
+        <li id="messages">📨 پیام‌ها و اطلاعیه‌ها</li>
+        <li id="profile" class="active">👤 پروفایل شخصی</li>
+        <li id="logout">🚪 خروج از اکانت</li>
+      </ul>
+
+    </aside>
+
+    <main class="dashboard-main" id="mainContent">
+
+  </main>
+
+  </div>
+
+  <script>
+    const main = document.getElementById('mainContent');
+
+    document.querySelectorAll('.dashboard-sidebar ul li').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.dashboard-sidebar ul li').forEach(el => el.classList.remove('active'));
+        item.classList.add('active');
+      });
+    });
+
+
+
+    function loadProfileForm() {
+  fetch('/Profile') 
+    .then(res => res.text())
+    .then(html => {
+      main.innerHTML = html;
+
+      fetch('/GetProfile', {
+        method: 'GET',
+        credentials: 'include'
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.username) document.getElementById('username').value = data.username;
+        if (data.email) document.getElementById('email').value = data.email;
+        if (data.password) document.getElementById('password').value = data.password;
+        if (data.avatarBase64) {
+          document.getElementById('profile-avatar').src = `data:image/jpeg;base64,${data.avatarBase64}`;
+        }
+      });
+
+      setTimeout(() => {
+        document.getElementById("updateProfileForm").addEventListener("submit", function(event) {
+          event.preventDefault();
+          const formData = new FormData(this);
+          const currentUsername = localStorage.getItem('currentUsername');
+          formData.append('currentUsername', currentUsername);
+
+          fetch('/UpdateProfile', {
+            method: 'POST',
+            body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+            alert(data.message || 'پروفایل با موفقیت به‌روزرسانی شد');
+            setTimeout(() => location.reload(), 500);
+          })
+          .catch(error => {
+            console.error('خطا در ارسال فرم:', error);
+            window.location.href = '/Login';
+          });
+        });
+      }, 100);
+    });
+}
+function loadContent(title, content) {
+      main.innerHTML = `<h1>${title}</h1><p>${content}</p>`;
+    }
+
+    document.querySelectorAll('.dashboard-sidebar ul li').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.dashboard-sidebar ul li').forEach(el => el.classList.remove('active'));
+        item.classList.add('active');
+
+        switch (item.id) {
+          case 'profile':
+            loadProfileForm();
+            break;
+          case 'food-reservation':
+            loadContent('🍽️ رزرو غذا', 'به زودی');
+            break;
+          case 'requests':
+            loadContent('📄 درخواست‌ها', 'به زودی');
+            break;
+          case 'semester-courses':
+            loadContent('📚 دروس نیمسال', 'به زودی');
+            break;
+          case 'payments':
+            loadContent('💰 پرداخت‌ها و امور مالی', 'به زودی');
+            break;
+          case 'messages':
+            loadContent('📨 پیام‌ها و اطلاعیه‌ها', 'به زودی');
+            break;
+          case 'logout':
+            localStorage.removeItem('currentUsername');
+            window.location.href = '/';
+            break;
+        }
+      });
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const username = localStorage.getItem('currentUsername');
+      if (!username) {
+        window.location.href = '/Login';
+        return;
+      }
+      loadProfileForm();
+    });
+  </script>
+</body>
+</html>

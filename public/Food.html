@@ -1,0 +1,21 @@
+<h2>🍽️ رزرو غذا</h2>
+<p>لطفاً غذای مورد نظر خود را از لیست زیر انتخاب کنید:</p>
+
+<form id="foodReservationForm">
+  <label for="food-select">انتخاب غذا:</label>
+  <select id="food-select" name="food">
+    <option value="کباب">کباب</option>
+    <option value="قرمه‌سبزی">قرمه‌سبزی</option>
+    <option value="عدس‌پلو">عدس‌پلو</option>
+  </select>
+  <br><br>
+  <button type="submit">ثبت رزرو</button>
+</form>
+
+<script>
+  document.getElementById('foodReservationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const food = document.getElementById('food-select').value;
+    alert('غذای انتخابی شما ثبت شد: ' + food);
+  });
+</script>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Page</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="login-body">
+  <div class="login-box">
+    <h2>ورود به سامانه دانشجویی</h2>
+    <form id="Loginform">
+      <input type="text" name="username" placeholder="نام کاربری" required />
+      <input type="password" name="password" placeholder="رمز ورود" required />
+      <button type="submit">ورود</button>
+    </form>    
+
+    <script>
+      const form = document.getElementById('Loginform');
+      form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(form);
+      const data = {
+        username: formData.get('username'),
+        password: formData.get('password')
+      };
+
+      try {
+        const response = await fetch('/Login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+        credentials: 'include' 
+      });
+
+
+        const result = await response.json();
+
+        if (response.ok) {
+          localStorage.setItem('currentUsername', data.username); 
+          alert('با موفقیت وارد سامانه شدید!');
+          window.location.href = '/Dashboard';
+        } else {
+          alert(result.message || 'ورود ناموفق!');
+        }
+      } catch (error) {
+        alert('ورود با ارور مواجه شد!');
+        console.error(error);
+      }
+    });
+
+
+    </script>
+    
+  </div>
+</body>
+</html>
