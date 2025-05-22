@@ -203,6 +203,8 @@ document.querySelectorAll('.dashboard-sidebar ul li').forEach(item => {
     document.querySelectorAll('.dashboard-sidebar ul li').forEach(el => el.classList.remove('active'));
     item.classList.add('active');
 
+    localStorage.setItem('activeTab', item.id);
+
     switch (item.id) {
         case 'profile':
         loadProfileForm();
@@ -236,5 +238,39 @@ window.addEventListener('DOMContentLoaded', () => {
     window.location.href = '/Login';
     return;
     }
-    loadProfileForm();
+      
+    const activeTab = localStorage.getItem('activeTab') || 'profile';
+    document.getElementById(activeTab)?.classList.add('active');
+
+    const justLoggedIn = localStorage.getItem('justLoggedIn');
+
+    if (justLoggedIn === 'true') {
+      loadProfileForm();
+      document.querySelectorAll('.dashboard-sidebar ul li').forEach(el => el.classList.remove('active'));
+      document.getElementById('profile').classList.add('active');
+      localStorage.removeItem('justLoggedIn');
+      
+    } else {
+
+    switch (activeTab) {
+      case 'profile':
+        loadProfileForm();
+        break;
+      case 'food-reservation':
+        loadFoodReservation();
+        break;
+      case 'requests':
+        loadContent('📄 درخواست‌ها', 'به زودی');
+        break;
+      case 'semester-courses':
+        loadContent('📚 دروس نیمسال', 'به زودی');
+        break;
+      case 'payments':
+        loadContent('💰 پرداخت‌ها و امور مالی', 'به زودی');
+        break;
+      case 'messages':
+        loadContent('📨 پیام‌ها و اطلاعیه‌ها', 'به زودی');
+        break;
+    }
+}
 });

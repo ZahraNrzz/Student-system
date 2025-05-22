@@ -42,6 +42,7 @@
         if (response.ok) {
           localStorage.setItem('currentUsername', data.username); 
           alert('با موفقیت وارد سامانه شدید!');
+          localStorage.setItem('justLoggedIn', 'true');
           window.location.href = '/Dashboard';
         } else {
           alert(result.message || 'ورود ناموفق!');
