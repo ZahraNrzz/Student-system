@@ -127,8 +127,8 @@ function loadFoodReservation() {
           const foods = await res.json();
 
           foodListDiv.innerHTML = foods.map(food => `
-            <label class="food-item">
-              <input type="radio" name="food" value='${JSON.stringify(food)}' required>
+            <input type="radio" id="food-${food._id}" name="food" value='${JSON.stringify(food)}' required>
+            <label for="food-${food._id}" class="custom-radio">
               <img src="/Images/${food.image}" alt="${food.name}" width="80" height="80">
               <div>
                 <strong>${food.name}</strong><br>
@@ -136,6 +136,7 @@ function loadFoodReservation() {
               </div>
             </label>
           `).join('');
+
         } catch (err) {
           console.error('خطا در واکشی غذاها:', err);
         }
