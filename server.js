@@ -373,6 +373,69 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // === Update Reservation ===
+  if (req.method === 'PUT' && req.url.startsWith('/update-reservation/')) {
+    const id = req.url.split('/').pop();
+    const currentUsername = getUsernameFromCookies(req.headers.cookie);
+
+    if (!currentUsername) {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ message: 'Unauthorized' }));
+    }
+
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk;
+    });
+
+    req.on('end', async () => {
+      try {
+        const { date, restaurant, food } = JSON.parse(body);
+
+        const user = await Student.findOne({ username: currentUsername });
+        if (!user) {
+          res.writeHead(404, { 'Content-Type': 'application/json' });
+          return res.end(JSON.stringify({ message: 'User not found' }));
+        }
+
+        const reservation = await Reservation.findOne({ _id: id, userId: user._id });
+        if (!reservation) {
+          res.writeHead(404, { 'Content-Type': 'application/json' });
+          return res.end(JSON.stringify({ message: 'رزرو پیدا نشد' }));
+        }
+
+        // اگر قیمت غذا تغییر کرده باشه، مبلغ رو از موجودی کم یا زیاد کن
+        const priceDifference = food.price - reservation.food.price;
+        const finance = await Finance.findOne({ userId: user._id });
+
+        if (finance) {
+          if (finance.balance < priceDifference) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            return res.end(JSON.stringify({ message: 'موجودی کافی نیست برای ویرایش رزرو' }));
+          }
+
+          finance.balance -= priceDifference;
+          await finance.save();
+        }
+
+        // بروزرسانی اطلاعات رزرو
+        reservation.date = date;
+        reservation.restaurant = restaurant;
+        reservation.food = food;
+        await reservation.save();
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'رزرو با موفقیت ویرایش شد' }));
+      } catch (err) {
+        console.error('Error updating reservation:', err);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'خطا در ویرایش رزرو', error: err.message }));
+      }
+    });
+
+    return;
+  }
+
 
   // === Fallback ===
   res.writeHead(404, { 'Content-Type': 'text/plain' });

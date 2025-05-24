@@ -1,14 +1,5 @@
 const main = document.getElementById('mainContent');
 
-document.querySelectorAll('.dashboard-sidebar ul li').forEach(item => {
-    item.addEventListener('click', () => {
-    document.querySelectorAll('.dashboard-sidebar ul li').forEach(el => el.classList.remove('active'));
-    item.classList.add('active');
-    });
-});
-
-
-
 function loadProfileForm() {
     fetch('/Profile') 
     .then(res => res.text())
@@ -78,6 +69,7 @@ function loadFoodReservation() {
               <td>${r.restaurant}</td>
               <td>
                 <button class="cancel-btn" data-id="${r._id}">❌ لغو</button>
+                <button class="edit-btn" data-id="${r._id}" data-date="${r.date}" data-restaurant="${r.restaurant}" data-food='${JSON.stringify(r.food)}'>✏️ ویرایش</button>
               </td>
             </tr>
           `;
@@ -103,6 +95,63 @@ function loadFoodReservation() {
           });
         }, 100);
       });
+
+      setTimeout(() => {
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.dataset.id;
+            const date = btn.dataset.date;
+            const restaurant = btn.dataset.restaurant;
+            const food = JSON.parse(btn.dataset.food);
+
+            document.querySelector('input[name="date"]').value = date;
+            document.querySelector('select[name="restaurant"]').value = restaurant;
+
+            loadFoods(restaurant).then(() => {
+              const radio = document.querySelector(`input[name="food"][value='${JSON.stringify(food)}']`);
+              if (radio) radio.checked = true;
+            });
+
+            document.getElementById('foodReservationSubmit').style.display = 'none';
+            let editBtn = document.getElementById('editReservationSubmit');
+            if (!editBtn) {
+              editBtn = document.createElement('button');
+              editBtn.id = 'editReservationSubmit';
+              editBtn.className = 'edit-submit-btn';
+              editBtn.textContent = '✏️ ثبت ویرایش';
+              editBtn.type = 'button';
+              document.getElementById('foodReservationForm').appendChild(editBtn);
+            } else {
+              editBtn.style.display = 'inline-block';
+            }
+
+            editBtn.onclick = () => {
+              const formData = new FormData(document.getElementById('foodReservationForm'));
+              const newDate = formData.get('date');
+              const newRestaurant = formData.get('restaurant');
+              const newFood = JSON.parse(formData.get('food'));
+
+              fetch(`/update-reservation/${id}`, {
+                method: 'PUT',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  date: newDate,
+                  restaurant: newRestaurant,
+                  food: newFood
+                })
+              })
+              .then(res => res.json())
+              .then(data => {
+                alert(data.message || 'ویرایش انجام شد');
+                loadFoodReservation(); 
+              });
+            };
+          });
+        });
+      }, 100);
+
+
 
       const restaurantSelect = document.getElementById('restaurant');
       const foodListDiv = document.getElementById('food-list');

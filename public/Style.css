@@ -416,7 +416,8 @@ input[type="radio"]:checked + label.custom-radio {
   margin-left: 8px;
 }
 
-#foodReservationForm button[type="submit"] {
+#foodReservationForm button[type="submit"],
+#foodReservationForm .edit-submit-btn {
   background-color: #5e71ff;
   color: white;
   border: none;
@@ -427,7 +428,8 @@ input[type="radio"]:checked + label.custom-radio {
   transition: background-color 0.3s;
 }
 
-#foodReservationForm button[type="submit"]:hover {
+#foodReservationForm button[type="submit"]:hover,
+#foodReservationForm .edit-submit-btn:hover {
   background-color: #3f59e0;
 }
 
@@ -459,7 +461,7 @@ input[type="radio"]:checked + label.custom-radio {
   color: #5e71ff;
 }
 
-.reservation-table td:last-child button {
+.reservation-table td:last-child .cancel-btn {
   background-color: #f7f6fc;
   color: #ff6b6b;
   border: solid 2px #ff6b6b;
@@ -469,8 +471,24 @@ input[type="radio"]:checked + label.custom-radio {
   transition: background-color 0.3s;
 }
 
-.reservation-table td:last-child button:hover {
+.reservation-table td:last-child .cancel-btn:hover {
   background-color: #9c271a;
+  border: solid 2px #9c271a;
+  color: white;
+}
+
+.reservation-table td:last-child .edit-btn {
+  background-color: #f7f6fc;
+  color: #055208;
+  border: solid 2px #449b49;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.reservation-table td:last-child .edit-btn:hover {
+  background-color: #008307;
   color: white;
 }
 
@@ -486,17 +504,6 @@ input[type="radio"]:checked + label.custom-radio {
   color: #444;
   font-weight: 500;
 }
-
-/* .reservation-table td:last-child button {
-  font-size: 0.9rem;
-  padding: 6px 12px;
-  background-color: #ff5c5c;
-  box-shadow: 0 2px 6px #0000001a;
-} */
-/* 
-.reservation-table td:last-child button:hover {
-  background-color: #d94c4c;
-} */
 
 .reservation-table thead th:first-child {
   border-top-right-radius: 12px;
