@@ -11,6 +11,7 @@ const Finance = require('./models/Finance');
 const Food = require('./models/Foods');
 const Request = require('./models/Requests');
 const PaymentsFinance = require('./models/PaymentsFinance');
+const Course = require('./models/Course');
 
 // --- Connect to DB
 const connectToDatabase = require('./db');
@@ -81,6 +82,7 @@ const server = http.createServer((req, res) => {
     if (req.url === '/Requests') return serveHtml('Requests.html', res);
     if (req.url === '/Payments') return serveHtml('Payments.html', res);
     if (req.url === '/Notifications') return serveHtml('Notifications.html', res);
+    if (req.url === '/CourseList') return serveHtml('CourseList.html', res);
 
 
     if (req.url.endsWith('.css') || req.url.match(/\.(png|js|jpg|jpeg|gif|svg)$/)) return serveStaticFile(req, res);
@@ -455,14 +457,17 @@ const server = http.createServer((req, res) => {
         const user = await Student.findOne({ username: currentUsername });
         const { receiver, message } = JSON.parse(body);
 
+        const statuses = ['در حال بررسی', 'در حال انجام', 'اتمام'];
+        const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+
         const newRequest = new Request({
           userId: user._id,
           receiver,
           message,
-          status: 'در حال بررسی',
+          status: randomStatus,
           date: new Date()
-
         });
+
 
         await newRequest.save();
         res.writeHead(201, { 'Content-Type': 'application/json' });
@@ -578,6 +583,19 @@ const server = http.createServer((req, res) => {
   }
 
 
+  if (req.url === '/GetCourses' && req.method === 'GET') {
+  (async () => {
+    try {
+      const courses = await Course.aggregate([{ $sample: { size: 5 } }]); 
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(courses));
+    } catch (err) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message: 'خطا در دریافت دروس', error: err.message }));
+    }
+  })();
+  return;
+}
 
   // === Fallback ===
   res.writeHead(404, { 'Content-Type': 'text/plain' });

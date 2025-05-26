@@ -374,6 +374,31 @@ function loadNotificationSection() {
     })
 }
 
+function loadCourseList() {
+  fetch('/CourseList') 
+    .then(res => res.text())
+    .then(html => {
+      main.innerHTML = html;
+
+      fetch('/GetCourses') 
+        .then(res => res.json())
+        .then(courses => {
+          const table = document.getElementById('course-table-body');
+          table.innerHTML = '';
+          courses.forEach(c => {
+            table.innerHTML += `
+              <tr>
+                <td>${c.title}</td>
+                <td>${c.code}</td>
+                <td>${c.unit}</td>
+              </tr>
+            `;
+          });
+        });
+    });
+}
+
+
 
 function loadContent(title, content) {
     main.innerHTML = `<h1>${title}</h1><p>${content}</p>`;
@@ -397,7 +422,7 @@ document.querySelectorAll('.dashboard-sidebar ul li').forEach(item => {
         loadRequestsContent();
         break;
         case 'semester-courses':
-        loadContent('📚 دروس نیمسال', 'به زودی');
+        loadCourseList();
         break;
         case 'payments':
         loadFinanceContent();
@@ -444,7 +469,7 @@ window.addEventListener('DOMContentLoaded', () => {
         loadRequestsContent();
         break;
       case 'semester-courses':
-        loadContent('📚 دروس نیمسال', 'به زودی');
+        loadCourseList();
         break;
       case 'payments':
         loadFinanceContent();

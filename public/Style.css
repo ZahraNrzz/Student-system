@@ -273,6 +273,7 @@ body.dashboard-body {
   height: 100px;
   object-fit: cover;
   border-radius: 50%;
+  padding: 4px;
   border: 3px solid #9e77cc;
 }
 
@@ -602,7 +603,7 @@ input[type="radio"]:checked + label.custom-radio {
   font-weight: bold;
 }
 
-.status-درحالا‌نجام {
+.status-درحالانجام {
   color: blue;
   font-weight: bold;
 }
@@ -771,4 +772,82 @@ input[type="radio"]:checked + label.custom-radio {
   color: #333;
   font-size: 1rem;
   line-height: 1.6;
+}
+
+/* Courses Section */
+.courses-section {
+  background-color: #f9f9f9;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 600px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  direction: rtl;
+  text-align: right;
+  font-family: inherit;
+}
+
+.courses-section h2 {
+  color: #5e71ff;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+/* Courses Table */
+.courses-section table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin-top: 1.5rem;
+}
+
+.courses-section th,
+.courses-section td {
+  padding: 0.9rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.courses-section th {
+  background-color: #f0f4ff;
+  color: #5e71ff;
+  font-weight: bold;
+}
+
+.courses-section tr:last-child td {
+  border-bottom: none;
+}
+
+.courses-section tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.courses-section tbody tr:hover {
+  background-color: #eef2ff;
+}
+
+.courses-section td {
+  color: #444;
+  font-weight: 500;
+}
+
+.courses-section label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 1rem;
+  color: #444;
+}
+
+.courses-section select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px #00000014;
+  margin-top: 0.5rem;
 }
