@@ -1,0 +1,29 @@
+<h2>📄 ثبت درخواست جدید</h2>
+<form id="requestForm" class="dashboard-request-form">
+  <label for="receiver">گیرنده درخواست:</label>
+  <select id="receiver" name="receiver" required>
+    <option value="">انتخاب کنید</option>
+    <option value="مدیر گروه">مدیر گروه</option>
+    <option value="رییس دانشکده">رییس دانشکده</option>
+    <option value="مسئول آموزش">مسئول آموزش</option>
+  </select>
+
+  <label for="message">متن درخواست:</label>
+  <textarea id="message" name="message" rows="5" required></textarea>
+
+  <button type="submit">📤 ارسال درخواست</button>
+</form>
+
+<table id="requestTable">
+  <thead>
+    <tr>
+      <th>گیرنده</th>
+      <th>متن درخواست</th>
+      <th>وضعیت</th>
+      <th>تاریخ</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+

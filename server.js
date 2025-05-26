@@ -9,6 +9,7 @@ const upload = multer({ storage: storage });
 const Reservation = require('./models/Reservation');
 const Finance = require('./models/Finance');
 const Food = require('./models/Foods');
+const Request = require('./models/Requests');
 
 // --- Connect to DB
 const connectToDatabase = require('./db');
@@ -75,6 +76,7 @@ const server = http.createServer((req, res) => {
     if (req.url === '/Dashboard') return serveHtml('Dashboard.html', res);
     if (req.url === '/Profile') return serveHtml('Profile.html', res);
     if (req.url === '/FoodReservation') return serveHtml('FoodReservation.html', res);
+    if (req.url === '/Requests') return serveHtml('Requests.html', res);
 
 
     if (req.url.endsWith('.css') || req.url.match(/\.(png|js|jpg|jpeg|gif|svg)$/)) return serveStaticFile(req, res);
@@ -404,7 +406,6 @@ const server = http.createServer((req, res) => {
           return res.end(JSON.stringify({ message: 'رزرو پیدا نشد' }));
         }
 
-        // اگر قیمت غذا تغییر کرده باشه، مبلغ رو از موجودی کم یا زیاد کن
         const priceDifference = food.price - reservation.food.price;
         const finance = await Finance.findOne({ userId: user._id });
 
@@ -418,14 +419,13 @@ const server = http.createServer((req, res) => {
           await finance.save();
         }
 
-        // بروزرسانی اطلاعات رزرو
         reservation.date = date;
         reservation.restaurant = restaurant;
         reservation.food = food;
         await reservation.save();
 
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ message: 'رزرو با موفقیت ویرایش شد' }));
+        res.end(JSON.stringify({ message: 'ویرایش رزرو با موفقیت ویرایش شد' }));
       } catch (err) {
         console.error('Error updating reservation:', err);
         res.writeHead(500, { 'Content-Type': 'application/json' });
@@ -433,6 +433,64 @@ const server = http.createServer((req, res) => {
       }
     });
 
+    return;
+  }
+
+  // === SendRequest ===
+  if (req.url === '/SendRequest' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk.toString());
+    req.on('end', async () => {
+      try {
+        const currentUsername = getUsernameFromCookies(req.headers.cookie);
+        if (!currentUsername) {
+          res.writeHead(401, { 'Content-Type': 'application/json' });
+          return res.end(JSON.stringify({ message: 'Unauthorized' }));
+        }
+
+        const user = await Student.findOne({ username: currentUsername });
+        const { receiver, message } = JSON.parse(body);
+
+        const newRequest = new Request({
+          userId: user._id,
+          receiver,
+          message,
+          status: 'در حال بررسی',
+          date: new Date()
+
+        });
+
+        await newRequest.save();
+        res.writeHead(201, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'درخواست با موفقیت ثبت شد' }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'خطا در ثبت درخواست', error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // === GetRequests ===
+  if (req.url === '/GetRequests' && req.method === 'GET') {
+    (async () => {
+      try {
+        const currentUsername = getUsernameFromCookies(req.headers.cookie);
+        if (!currentUsername) {
+          res.writeHead(401, { 'Content-Type': 'application/json' });
+          return res.end(JSON.stringify({ message: 'Unauthorized' }));
+        }
+
+        const user = await Student.findOne({ username: currentUsername });
+        const requests = await Request.find({ userId: user._id }).sort({ createdAt: -1 });
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(requests));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'خطا در دریافت درخواست‌ها', error: err.message }));
+      }
+    })();
     return;
   }
 

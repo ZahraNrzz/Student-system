@@ -521,3 +521,93 @@ input[type="radio"]:checked + label.custom-radio {
   white-space: nowrap;
 }
 
+/* --- Request Form --- */
+.dashboard-request-form {
+  max-width: 600px;
+  margin: 2rem auto;
+  background-color: #f9f9f9;
+  padding: 1.5rem 2rem;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(69, 41, 102, 0.2);
+}
+
+.dashboard-request-form h2 {
+  text-align: center;
+  color: #5e71ff;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.dashboard-request-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #444;
+}
+
+.dashboard-request-form select,
+.dashboard-request-form textarea {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.dashboard-request-form button {
+  background-color: #5e71ff;
+  color: white;
+  padding: 0.9rem 2rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.dashboard-request-form button:hover {
+  background-color: #3f59e0;
+}
+
+#requestTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: right;
+}
+
+#requestTable th, #requestTable td {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+#requestTable th {
+  background-color: #5e71ff;
+  color: #fff;
+}
+
+#requestTable tr:last-child td {
+  border-bottom: none;
+}
+
+.status-درحالبررسی {
+  color: orange;
+  font-weight: bold;
+}
+
+.status-درحالا‌نجام {
+  color: blue;
+  font-weight: bold;
+}
+
+.status-اتمام {
+  color: green;
+  font-weight: bold;
+}

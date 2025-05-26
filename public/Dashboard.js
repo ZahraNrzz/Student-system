@@ -243,6 +243,67 @@ function loadFoodReservation() {
     });
 }
 
+function loadRequestsContent() {
+  fetch('/Requests')
+    .then(res => res.text())
+    .then(html => {
+      main.innerHTML = html;
+      loadRequests();
+
+      const form = document.getElementById('requestForm');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const receiver = form.receiver.value;
+        const message = form.message.value;
+
+        fetch('/SendRequest', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ receiver, message })
+        })
+          .then(res => res.json())
+          .then(data => {
+            alert(data.message || 'درخواست ثبت شد');
+            form.reset();
+            loadRequests();
+          })
+          .catch(err => {
+            console.error('خطا در ارسال درخواست:', err);
+            alert('ارسال با خطا مواجه شد');
+          });
+      });
+    });
+}
+
+async function loadRequests() {
+  const res = await fetch('/GetRequests');
+  const requests = await res.json();
+
+  const table = document.getElementById('requestTable');
+  if (!table) return;
+
+  const tbody = table.querySelector('tbody');
+  tbody.innerHTML = '';
+
+  requests.forEach(req => {
+    const tr = document.createElement('tr');
+
+    const cleanStatus = req.status.replace(/\s/g, '');
+
+    tr.innerHTML = `
+      <td>${req.receiver}</td>
+      <td>${req.message}</td>
+      <td class="status-${cleanStatus}">${req.status}</td>
+      <td>${new Date(req.createdAt).toLocaleDateString('fa-IR')}</td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+  
+}
+
 function loadContent(title, content) {
     main.innerHTML = `<h1>${title}</h1><p>${content}</p>`;
 }
@@ -262,7 +323,7 @@ document.querySelectorAll('.dashboard-sidebar ul li').forEach(item => {
         loadFoodReservation();
         break;
         case 'requests':
-        loadContent('📄 درخواست‌ها', 'به زودی');
+        loadRequestsContent();
         break;
         case 'semester-courses':
         loadContent('📚 دروس نیمسال', 'به زودی');
@@ -309,7 +370,7 @@ window.addEventListener('DOMContentLoaded', () => {
         loadFoodReservation();
         break;
       case 'requests':
-        loadContent('📄 درخواست‌ها', 'به زودی');
+        loadRequestsContent();
         break;
       case 'semester-courses':
         loadContent('📚 دروس نیمسال', 'به زودی');
