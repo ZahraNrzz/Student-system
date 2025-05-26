@@ -80,6 +80,7 @@ const server = http.createServer((req, res) => {
     if (req.url === '/FoodReservation') return serveHtml('FoodReservation.html', res);
     if (req.url === '/Requests') return serveHtml('Requests.html', res);
     if (req.url === '/Payments') return serveHtml('Payments.html', res);
+    if (req.url === '/Notifications') return serveHtml('Notifications.html', res);
 
 
     if (req.url.endsWith('.css') || req.url.match(/\.(png|js|jpg|jpeg|gif|svg)$/)) return serveStaticFile(req, res);

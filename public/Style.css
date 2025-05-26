@@ -726,3 +726,49 @@ input[type="radio"]:checked + label.custom-radio {
   color: #444;
   font-weight: 500;
 }
+
+/* Messages & Notices Section */
+.messages-notices-section {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  direction: rtl;
+  text-align: right;
+}
+
+.messages-notices-section h2 {
+  color: #5e71ff;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 0.5rem;
+  font-size: 1.4rem;
+}
+
+.message-box,
+.notice-box {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 2px 8px #00000014;
+  transition: background-color 0.3s;
+}
+
+.message-header,
+.notice-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #444;
+}
+
+.message-text,
+.notice-text {
+  color: #333;
+  font-size: 1rem;
+  line-height: 1.6;
+}

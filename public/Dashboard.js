@@ -366,6 +366,15 @@ function loadTuitionStatus(term) {
   });
 }
 
+function loadNotificationSection() {
+  fetch('/Notifications') 
+    .then(res => res.text())
+    .then(html => {
+      main.innerHTML = html;
+    })
+}
+
+
 function loadContent(title, content) {
     main.innerHTML = `<h1>${title}</h1><p>${content}</p>`;
 }
@@ -394,7 +403,7 @@ document.querySelectorAll('.dashboard-sidebar ul li').forEach(item => {
         loadFinanceContent();
         break;
         case 'messages':
-        loadContent('📨 پیام‌ها و اطلاعیه‌ها', 'به زودی');
+        loadNotificationSection();
         break;
         case 'logout':
         localStorage.removeItem('currentUsername');
@@ -441,7 +450,7 @@ window.addEventListener('DOMContentLoaded', () => {
         loadFinanceContent();
         break;
       case 'messages':
-        loadContent('📨 پیام‌ها و اطلاعیه‌ها', 'به زودی');
+        loadNotificationSection();
         break;
     }
 }
