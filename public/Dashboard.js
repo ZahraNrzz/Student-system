@@ -304,6 +304,68 @@ async function loadRequests() {
   
 }
 
+function loadFinanceContent() {
+  fetch('/Payments') 
+    .then(res => res.text())
+    .then(html => {
+      main.innerHTML = html;
+
+      const termInput = document.getElementById('term-select');
+      const payButton = document.getElementById('pay-tuition-btn');
+      const paymentAmount = document.getElementById('pay-amount');
+
+      termInput.addEventListener('change', () => {
+        loadTuitionStatus(termInput.value);
+      });
+
+      payButton.addEventListener('click', () => {
+        const amount = Number(paymentAmount.value);
+        const term = termInput.value;
+        if (!term || amount <= 0) return alert('لطفا مقدار معتبر و ترم را وارد کنید');
+
+        fetch('/PayTuition', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount, term })
+        })
+        .then(res => res.json())
+        .then(data => {
+          alert(data.message);
+          loadTuitionStatus(term);
+        });
+      });
+
+      loadTuitionStatus(termInput.value);
+    });
+}
+
+function loadTuitionStatus(term) {
+  fetch(`/GetTuitionStatus?term=${term}`, {
+    method: 'GET',
+    credentials: 'include'
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById('total-paid').textContent = data.totalPaid.toLocaleString();
+    document.getElementById('remaining').textContent = data.remaining.toLocaleString();
+
+    const table = document.getElementById('payments-table-body');
+    table.innerHTML = '';
+    data.payments.forEach(p => {
+      table.innerHTML += `
+        <tr>
+          <td>${new Date(p.date).toLocaleDateString('fa-IR')}</td>
+      <td>${p.amount.toLocaleString()} تومان</td>
+      <td>${p.term}</td>
+      <td>${p.totalPaidUpToThisPayment.toLocaleString()} تومان</td>
+      <td>${p.remaining.toLocaleString()} تومان</td>
+        </tr>
+      `;
+    });
+  });
+}
+
 function loadContent(title, content) {
     main.innerHTML = `<h1>${title}</h1><p>${content}</p>`;
 }
@@ -329,7 +391,7 @@ document.querySelectorAll('.dashboard-sidebar ul li').forEach(item => {
         loadContent('📚 دروس نیمسال', 'به زودی');
         break;
         case 'payments':
-        loadContent('💰 پرداخت‌ها و امور مالی', 'به زودی');
+        loadFinanceContent();
         break;
         case 'messages':
         loadContent('📨 پیام‌ها و اطلاعیه‌ها', 'به زودی');
@@ -376,7 +438,7 @@ window.addEventListener('DOMContentLoaded', () => {
         loadContent('📚 دروس نیمسال', 'به زودی');
         break;
       case 'payments':
-        loadContent('💰 پرداخت‌ها و امور مالی', 'به زودی');
+        loadFinanceContent();
         break;
       case 'messages':
         loadContent('📨 پیام‌ها و اطلاعیه‌ها', 'به زودی');

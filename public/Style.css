@@ -611,3 +611,118 @@ input[type="radio"]:checked + label.custom-radio {
   color: green;
   font-weight: bold;
 }
+
+/* Tuition Payment Section */
+.tuition-payment-section {
+  background-color: #f9f9f9;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 600px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  direction: rtl;
+  text-align: right;
+  font-family: inherit;
+}
+
+.tuition-payment-section h2 {
+  color: #5e71ff;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.tuition-payment-section label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 1rem;
+  color: #444;
+}
+
+.tuition-payment-section select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px #00000014;
+  margin-top: 0.5rem;
+}
+
+.tuition-payment-section p {
+  margin: 0.8rem 0;
+  font-weight: 500;
+  color: #333;
+}
+
+.tuition-payment-section span {
+  font-weight: bold;
+  color: #5e71ff;
+}
+
+#pay-amount {
+  width: 100%;
+  padding: 10px;
+  margin: 1rem 0;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px #00000014;
+}
+
+#pay-tuition-btn {
+  background-color: #5e71ff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+#pay-tuition-btn:hover {
+  background-color: #3f59e0;
+}
+
+/* Tuition Payments Table */
+.tuition-payment-section table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.tuition-payment-section th,
+.tuition-payment-section td {
+  padding: 0.9rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.tuition-payment-section th {
+  background-color: #f0f4ff;
+  color: #5e71ff;
+  font-weight: bold;
+}
+
+.tuition-payment-section tr:last-child td {
+  border-bottom: none;
+}
+
+.tuition-payment-section tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.tuition-payment-section tbody tr:hover {
+  background-color: #eef2ff;
+}
+
+.tuition-payment-section td {
+  color: #444;
+  font-weight: 500;
+}

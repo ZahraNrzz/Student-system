@@ -1,0 +1,30 @@
+<h2>💰 پرداخت شهریه ترم</h2>
+<section class="tuition-payment-section">
+    <label>ترم جاری:
+        <select id="term-select">
+            <option value="1403-2">1403-2</option>
+            <option value="1403-1">1403-1</option>
+        </select>
+        </label>
+
+        <p>شهریه: <span>2,000,000 </span> تومان</p>
+        <p>مبلغ پرداخت‌شده: <span id="total-paid">0</span> تومان</p>
+        <p>بدهی باقیمانده: <span id="remaining">0</span> تومان</p>
+
+        <input type="number" id="pay-amount" placeholder="مبلغ پرداخت (تومان)">
+        <button id="pay-tuition-btn">پرداخت</button>
+
+        <table>
+            <thead>
+                <tr>
+                <th>تاریخ پرداخت</th>
+                <th>مبلغ</th>
+                <th>ترم</th>
+                <th>جمع پرداخت تا این لحظه</th>
+                <th>بدهی باقی‌مانده</th>
+                </tr>
+            </thead>
+            <tbody id="payments-table-body"></tbody>
+        </table>
+
+</section>

@@ -10,10 +10,12 @@ const Reservation = require('./models/Reservation');
 const Finance = require('./models/Finance');
 const Food = require('./models/Foods');
 const Request = require('./models/Requests');
+const PaymentsFinance = require('./models/PaymentsFinance');
 
 // --- Connect to DB
 const connectToDatabase = require('./db');
 const Student = require('./models/Student');
+
 connectToDatabase();
 
 const hostname = '127.0.0.1';
@@ -77,6 +79,7 @@ const server = http.createServer((req, res) => {
     if (req.url === '/Profile') return serveHtml('Profile.html', res);
     if (req.url === '/FoodReservation') return serveHtml('FoodReservation.html', res);
     if (req.url === '/Requests') return serveHtml('Requests.html', res);
+    if (req.url === '/Payments') return serveHtml('Payments.html', res);
 
 
     if (req.url.endsWith('.css') || req.url.match(/\.(png|js|jpg|jpeg|gif|svg)$/)) return serveStaticFile(req, res);
@@ -493,6 +496,86 @@ const server = http.createServer((req, res) => {
     })();
     return;
   }
+
+  // === PayTuition ===
+  if (req.url === '/PayTuition' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk.toString());
+    req.on('end', async () => {
+      try {
+        const currentUsername = getUsernameFromCookies(req.headers.cookie);
+        if (!currentUsername) {
+          res.writeHead(401, { 'Content-Type': 'application/json' });
+          return res.end(JSON.stringify({ message: 'Unauthorized' }));
+        }
+
+        const { amount, term } = JSON.parse(body);
+        const user = await Student.findOne({ username: currentUsername });
+
+        const payment = new PaymentsFinance({
+          userId: user._id,
+          amount: Number(amount),
+          term: term || '1403-2' 
+        });
+
+        await payment.save();
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'پرداخت ثبت شد' }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'خطا در ثبت پرداخت', error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // === GetTuitionStatus ===
+  if (req.url.startsWith('/GetTuitionStatus') && req.method === 'GET') {
+    (async () => {
+      try {
+        const currentUsername = getUsernameFromCookies(req.headers.cookie);
+        if (!currentUsername) {
+          res.writeHead(401, { 'Content-Type': 'application/json' });
+          return res.end(JSON.stringify({ message: 'Unauthorized' }));
+        }
+
+        const url = new URL(req.url, `http://${req.headers.host}`);
+        const term = url.searchParams.get('term') || '1403-2';
+
+        const user = await Student.findOne({ username: currentUsername });
+        const tuition = 2000000;
+
+        const payments = await PaymentsFinance.find({ userId: user._id, term }).sort({ date: 1 });
+
+        let totalPaidSoFar = 0;
+        const enrichedPayments = payments.map(p => {
+          totalPaidSoFar += p.amount;
+          return {
+            _id: p._id,
+            amount: p.amount,
+            date: p.date,
+            term: p.term,
+            totalPaidUpToThisPayment: totalPaidSoFar,
+            remaining: tuition - totalPaidSoFar
+          };
+        });
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+          tuition,
+          totalPaid: totalPaidSoFar,
+          remaining: tuition - totalPaidSoFar,
+          payments: enrichedPayments
+        }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'خطا در واکشی اطلاعات مالی', error: err.message }));
+      }
+    })();
+    return;
+  }
+
 
 
   // === Fallback ===
