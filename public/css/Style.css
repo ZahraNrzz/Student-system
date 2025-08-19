@@ -1,0 +1,853 @@
+@font-face {
+  font-family: 'Dana', Arial, Helvetica, sans-serif;
+  src: url('../Fonts/Dana-Medium.woff2') format('woff2');
+
+}
+
+* {
+    box-sizing: border-box;
+    font-family: Dana;
+  }
+
+html {
+  font-size: 16px;
+}
+  
+  body.index-body {
+    background-image: url('../Images/Back_img.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  } 
+
+  body.login-body , body.signup-body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #9e77cc, #5e71ff);
+  }
+  
+  #welcome {
+    margin: 0px 30px;
+    background-color: #7bb9f3ab;
+    padding: 50px 50px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 4px 20px #00000033;
+  }
+  
+  #welcome h1 {
+    color: #ffffff;
+    margin-bottom: 20px;
+  }
+  
+  #welcome button {
+    background-color: #f1f1f1;
+    color: #1c2f7c;
+    font-weight: 500;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 20px;
+    margin: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px #00000033;
+    transition: all 0.4s ease;
+  }
+  
+  @media only screen and (max-width: 400px) {
+    #welcome button {
+      width: 100%;
+      margin: 5px 0px;
+    }
+  }
+
+  #welcome button:hover {
+    background-color: #f7f0ce;
+    box-shadow: 0 4px 20px #00000070;
+  }
+  
+  .signup-box, .login-box {
+    margin: 0px 30px;
+    background: #ffffffd3;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px #00000054;
+    width: 300px;
+    text-align: center;
+  }
+  
+  .signup-box h2, .login-box h2 {
+    margin: 20px 0px;
+    color: #000000;
+  }
+  
+  .signup-box input[type="text"], .login-box input[type="text"],
+  .signup-box input[type="password"], .login-box input[type="password"],
+  .signup-box input[type="email"], .login-box input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    text-align: right;
+    margin: 10px 0;
+    box-shadow: 0 4px 20px #0000003a;
+    border: 0px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .signup-box button, .login-box button {
+    width: 100%;
+    padding: 10px;
+    background-color: #c58c4e;
+    box-shadow: 0 4px 20px #0000003a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-box button:hover, .signup-box button:hover {
+    background-color: #d1a26b;
+    box-shadow: 0 4px 20px #00000050;
+  }
+  
+
+
+  /*dashboard styling*/
+
+body.dashboard-body {
+  margin: 0;
+  direction: rtl;
+  background-color: #f4f4f4;
+  color: #333;
+  font-family: sans-serif;
+}
+
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* --- Sidebar --- */
+.dashboard-sidebar {
+  background-image: linear-gradient(102deg, rgb(94, 113, 255) 0%, rgb(158, 119, 204) 100%);
+  margin: 1rem;
+  border-radius: 1rem;
+  color: white;
+  padding: 2rem 1rem;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-shadow: -2px 0 10px #0000001f;
+}
+
+.dashboard-sidebar h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.6rem;
+}
+
+.dashboard-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dashboard-sidebar ul li {
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  background-color: #fff;
+  border: solid 1px #fff;
+  color: #716F87;
+  transition: background-color 0.3s;
+}
+
+.dashboard-sidebar ul li:hover {
+  background-color: rgba(126, 92, 176, 0);
+  border: solid 1px #fff;
+  color: #fff;
+}
+
+.dashboard-sidebar ul li.active {
+  background-color: #ffffffa9;
+  color: #5e71ff;
+  font-weight: bold;
+}
+
+/* --- Main Content --- */
+.dashboard-main {
+  flex: 1;
+  padding: 1rem 3rem;
+  background-color: #ffffff;
+}
+
+.dashboard-main h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+  color: #5e71ff;
+  text-align: right;
+}
+
+/* --- Profile Form --- */
+.dashboard-profile-form {
+  max-width: 600px;
+  margin: auto;
+  background-color: #f9f9f9;
+  padding: 1rem 2rem;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(69, 41, 102, 0.2);
+}
+
+.dashboard-profile-form h2 {
+  text-align: center;
+  color: #9e77cc;
+  margin-bottom: 1rem;
+}
+
+.dashboard-profile-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.dashboard-profile-form input[type="text"],
+.dashboard-profile-form input[type="email"],
+.dashboard-profile-form input[type="password"],
+.dashboard-profile-form input[type="file"] {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+/* --- Submit Button --- */
+.dashboard-profile-form button {
+  background-color: #1469eb;
+  color: white;
+  padding: 0.9rem 2rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.dashboard-profile-form button:hover {
+  background-color: #3f59e0;
+}
+
+/* --- Avatar & Upload Section --- */
+.avatar-upload-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.dashboard-avatar-box {
+  text-align: center;
+}
+
+.dashboard-avatar-box img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  padding: 4px;
+  border: 3px solid #9e77cc;
+}
+
+/* --- File Upload Button Custom --- */
+.custom-file-upload {
+  position: relative;
+  display: inline-block;
+}
+
+.custom-file-upload input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload label {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 6px 8px;
+  border: 2px dashed #aaa;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.custom-file-upload label:hover {
+  background-color: #e0e0e0;
+  border-color: #888;
+}
+
+.custom-file-upload .icon {
+  font-size: 1.3rem;
+  color: #5e71ff;
+}
+
+/* Food Reservation Styling*/
+.food-reservation-section {
+  background-color: #f9f9f9;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 600px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  direction: rtl;
+  text-align: right;
+}
+
+.food-reservation-section h2 {
+  color: #5e71ff;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.food-reservation-section .finance-box {
+  background-color: #f0f4ff;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  color: #333;
+  box-shadow: 0 4px 10px #00000014;
+}
+
+#increase-balance {
+  background-color: #9e77cc;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#increase-balance:hover {
+  background-color: #7b5eb0;
+}
+
+#foodReservationForm {
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.form-group select,
+.form-group input[type="date"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px #00000014;
+}
+
+.food-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.food-list img {
+  border-radius: 15px;
+  border: solid 1px #9783cf;
+}
+
+.food-list label {
+  background-color: #f3f3f3;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  border: solid 2px #e3e0f4;
+  box-shadow: 0 2px 6px #00000014;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"]:checked + label.custom-radio {
+  background-color: #e3e0f4;
+  color: #33264f;
+  border: solid 2px #513c76;
+  transition: all 0.4s ease;
+}
+
+
+.food-list input[type="checkbox"] {
+  margin-left: 8px;
+}
+
+#foodReservationForm button[type="submit"],
+#foodReservationForm .edit-submit-btn {
+  background-color: #5e71ff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#foodReservationForm button[type="submit"]:hover,
+#foodReservationForm .edit-submit-btn:hover {
+  background-color: #3f59e0;
+}
+
+.food-reservation-section h3 {
+  color: #333;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 0.5rem;
+}
+
+.reservation-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 4px 10px #00000014;
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.reservation-table th,
+.reservation-table td {
+  padding: 0.8rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.reservation-table th {
+  background-color: #f0f4ff;
+  color: #5e71ff;
+}
+
+.reservation-table td:last-child .cancel-btn {
+  background-color: #f7f6fc;
+  color: #ff6b6b;
+  border: solid 2px #ff6b6b;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.reservation-table td:last-child .cancel-btn:hover {
+  background-color: #9c271a;
+  border: solid 2px #9c271a;
+  color: white;
+}
+
+.reservation-table td:last-child .edit-btn {
+  background-color: #f7f6fc;
+  color: #055208;
+  border: solid 2px #449b49;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.reservation-table td:last-child .edit-btn:hover {
+  background-color: #008307;
+  color: white;
+}
+
+.reservation-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.reservation-table tbody tr:hover {
+  background-color: #eef2ff;
+}
+
+.reservation-table td {
+  color: #444;
+  font-weight: 500;
+}
+
+.reservation-table thead th:first-child {
+  border-top-right-radius: 12px;
+}
+
+.reservation-table thead th:last-child {
+  border-top-left-radius: 12px;
+}
+
+.reservation-table tbody td {
+  vertical-align: middle;
+}
+
+.reservation-table td:last-child {
+  white-space: nowrap;
+}
+
+/* --- Request Form --- */
+.dashboard-request-form {
+  max-width: 600px;
+  margin: 2rem auto;
+  background-color: #f9f9f9;
+  padding: 1.5rem 2rem;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(69, 41, 102, 0.2);
+}
+
+.dashboard-request-form h2 {
+  text-align: center;
+  color: #5e71ff;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.dashboard-request-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #444;
+}
+
+.dashboard-request-form select,
+.dashboard-request-form textarea {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.dashboard-request-form button {
+  background-color: #5e71ff;
+  color: white;
+  padding: 0.9rem 2rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.dashboard-request-form button:hover {
+  background-color: #3f59e0;
+}
+
+#requestTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: right;
+}
+
+#requestTable th, #requestTable td {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+#requestTable th {
+  background-color: #5e71ff;
+  color: #fff;
+}
+
+#requestTable tr:last-child td {
+  border-bottom: none;
+}
+
+.status-درحالبررسی {
+  color: orange;
+  font-weight: bold;
+}
+
+.status-درحالانجام {
+  color: blue;
+  font-weight: bold;
+}
+
+.status-اتمام {
+  color: green;
+  font-weight: bold;
+}
+
+/* Tuition Payment Section */
+.tuition-payment-section {
+  background-color: #f9f9f9;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 600px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  direction: rtl;
+  text-align: right;
+  font-family: inherit;
+}
+
+.tuition-payment-section h2 {
+  color: #5e71ff;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.tuition-payment-section label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 1rem;
+  color: #444;
+}
+
+.tuition-payment-section select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px #00000014;
+  margin-top: 0.5rem;
+}
+
+.tuition-payment-section p {
+  margin: 0.8rem 0;
+  font-weight: 500;
+  color: #333;
+}
+
+.tuition-payment-section span {
+  font-weight: bold;
+  color: #5e71ff;
+}
+
+#pay-amount {
+  width: 100%;
+  padding: 10px;
+  margin: 1rem 0;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px #00000014;
+}
+
+#pay-tuition-btn {
+  background-color: #5e71ff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+#pay-tuition-btn:hover {
+  background-color: #3f59e0;
+}
+
+/* Tuition Payments Table */
+.tuition-payment-section table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.tuition-payment-section th,
+.tuition-payment-section td {
+  padding: 0.9rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.tuition-payment-section th {
+  background-color: #f0f4ff;
+  color: #5e71ff;
+  font-weight: bold;
+}
+
+.tuition-payment-section tr:last-child td {
+  border-bottom: none;
+}
+
+.tuition-payment-section tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.tuition-payment-section tbody tr:hover {
+  background-color: #eef2ff;
+}
+
+.tuition-payment-section td {
+  color: #444;
+  font-weight: 500;
+}
+
+/* Messages & Notices Section */
+.messages-notices-section {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  direction: rtl;
+  text-align: right;
+}
+
+.messages-notices-section h2 {
+  color: #5e71ff;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 0.5rem;
+  font-size: 1.4rem;
+}
+
+.message-box,
+.notice-box {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 2px 8px #00000014;
+  transition: background-color 0.3s;
+}
+
+.message-header,
+.notice-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #444;
+}
+
+.message-text,
+.notice-text {
+  color: #333;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Courses Section */
+.courses-section {
+  background-color: #f9f9f9;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 600px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  direction: rtl;
+  text-align: right;
+  font-family: inherit;
+}
+
+.courses-section h2 {
+  color: #5e71ff;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+/* Courses Table */
+.courses-section table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin-top: 1.5rem;
+}
+
+.courses-section th,
+.courses-section td {
+  padding: 0.9rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.courses-section th {
+  background-color: #f0f4ff;
+  color: #5e71ff;
+  font-weight: bold;
+}
+
+.courses-section tr:last-child td {
+  border-bottom: none;
+}
+
+.courses-section tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.courses-section tbody tr:hover {
+  background-color: #eef2ff;
+}
+
+.courses-section td {
+  color: #444;
+  font-weight: 500;
+}
+
+.courses-section label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 1rem;
+  color: #444;
+}
+
+.courses-section select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px #00000014;
+  margin-top: 0.5rem;
+}
