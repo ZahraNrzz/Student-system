@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -16,7 +15,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const connectToDatabase = require('./db');
 connectToDatabase();
 
-// Routeها
+// Routes
 const profileRoutes = require('./routes/profileRoutes');
 const reservationRoutes = require('./routes/reservationRoutes');
 const financeRoutes = require('./routes/financeRoutes');
@@ -31,7 +30,7 @@ app.use('/api/payments', financeRoutes);
 app.use('/api/requests', requestRoutes);
 app.use('/api/courses', courseRoutes);
 
-// Route برای صفحات HTML
+// Route Fot HTML
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'Index.html')));
 app.get('/Login', (req, res) => res.sendFile(path.join(__dirname, 'public', 'Login.html')));
 app.get('/Signup', (req, res) => res.sendFile(path.join(__dirname, 'public', 'Signup.html')));

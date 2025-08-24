@@ -1,4 +1,3 @@
-// routes/financeRoutes.js
 const express = require('express');
 const Student = require('../models/Student');
 const Finance = require('../models/Finance');
@@ -6,7 +5,6 @@ const PaymentsFinance = require('../models/PaymentsFinance');
 
 const router = express.Router();
 
-// Helper
 const getUsernameFromCookies = (req) => req.cookies.username || null;
 
 // Recharge Balance

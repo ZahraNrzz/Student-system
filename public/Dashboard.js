@@ -58,7 +58,7 @@ function loadFoodReservation() {
       const foodForm = document.getElementById('foodReservationForm');
       const increaseButton = document.getElementById('increase-balance');
 
-      // دریافت موجودی و رزروها
+      // Get Food Reservation
       fetch('/api/reservation/GetReservations', { method: 'GET', credentials: 'include' })
         .then(res => res.json())
         .then(data => {
@@ -79,7 +79,7 @@ function loadFoodReservation() {
             `;
           });
 
-          // لغو رزرو
+          // Cancel Reservation
           document.querySelectorAll('.cancel-btn').forEach(btn => {
             btn.addEventListener('click', () => {
               const id = btn.dataset.id;
@@ -94,7 +94,7 @@ function loadFoodReservation() {
             });
           });
 
-          // ویرایش رزرو
+          // Edit Reservation
           document.querySelectorAll('.edit-btn').forEach(btn => {
             btn.addEventListener('click', () => {
               const id = btn.dataset.id;
@@ -145,7 +145,7 @@ function loadFoodReservation() {
           });
         });
 
-      // بارگذاری غذاها
+      // Load Foods
       async function loadFoods(restaurant) {
         if (!restaurant) {
           foodListDiv.innerHTML = '';
@@ -171,12 +171,12 @@ function loadFoodReservation() {
         }
       }
 
-      // تغییر رستوران
+      // Change Restorant
       restaurantSelect.addEventListener('change', () => {
         loadFoods(restaurantSelect.value);
       });
 
-      // رزرو غذا
+      // Reserve Food
       foodForm.addEventListener('submit', function (event) {
         event.preventDefault();
         const formData = new FormData(foodForm);
@@ -197,7 +197,7 @@ function loadFoodReservation() {
           });
       });
 
-      // افزایش موجودی
+      // Increase Balance
       increaseButton.addEventListener('click', () => {
         const amount = prompt('مقدار افزایش موجودی (تومان):');
         if (!amount || isNaN(amount) || Number(amount) <= 0) {

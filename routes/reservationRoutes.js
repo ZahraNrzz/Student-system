@@ -1,4 +1,3 @@
-// routes/reservationRoutes.js
 const express = require('express');
 const multer = require('multer');
 const Student = require('../models/Student');
@@ -9,7 +8,6 @@ const Food = require('../models/Foods');
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Helper: get username from cookies
 const getUsernameFromCookies = (req) => req.cookies.username || null;
 
 // Reserve Food

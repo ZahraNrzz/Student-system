@@ -1,10 +1,9 @@
-// routes/courseRoutes.js
 const express = require('express');
 const Course = require('../models/Course');
 
 const router = express.Router();
 
-// گرفتن لیست همه دروس
+// Get The List Of Courses
 router.get('/GetCourses', async (req, res) => {
   try {
     const courses = await Course.find({});

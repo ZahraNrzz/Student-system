@@ -1,4 +1,3 @@
-// routes/authRoutes.js
 const express = require('express');
 const multer = require('multer');
 const Student = require('../models/Student');
@@ -6,7 +5,7 @@ const Student = require('../models/Student');
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Helper: get username from cookies
+// get username from cookies
 const getUsernameFromCookies = (req) => req.cookies.username || null;
 
 // --- Signup ---
@@ -14,7 +13,7 @@ router.post('/Signup', async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
-    // بررسی موجودیت کاربر
+    // Checking The Existence Of User
     const existingUser = await Student.findOne({ $or: [{ username }, { email }] });
     if (existingUser) {
       const msg = existingUser.username === username
@@ -42,7 +41,7 @@ router.post('/Login', async (req, res) => {
       return res.status(401).json({ message: 'نام کاربری یا رمز اشتباه است' });
     }
 
-    // ست کردن کوکی
+    // Set Cookies
     res.cookie('username', user.username, { httpOnly: true });
 
     res.status(200).json({ message: 'ورود موفقیت‌آمیز بود', username: user.username });
