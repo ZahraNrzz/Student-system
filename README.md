@@ -187,22 +187,13 @@ Seed files are also included for initializing sample data:
 
 ## 📸 Screenshots
 
-<img width="1365" height="600" alt="Index" src="https://github.com/user-attachments/assets/6a5b2b79-728e-4766-9388-632e215959fa" />
-<img width="1365" height="579" alt="Signup" src="https://github.com/user-attachments/assets/f03d9ac1-b070-40bf-a39c-8c931dcd6e40" />
-<img width="1366" height="898" alt="FoodReservation" src="https://github.com/user-attachments/assets/e0ad4a8c-a4ff-4d36-88c9-ac301ee8c86f" />
-<img width="1366" height="625" alt="Requests" src="https://github.com/user-attachments/assets/a3b17ccc-e156-4e05-ae72-e49c0b79f784" />
-<img width="1366" height="828" alt="CourseList" src="https://github.com/user-attachments/assets/23053b49-064c-4c0c-aca8-f40a4caafa76" />
-<img width="1366" height="660" alt="Payments" src="https://github.com/user-attachments/assets/039e8d6f-f438-470f-9d72-91b1970fbb2c" />
+<img width="300" height="auto" alt="Index" src="https://github.com/user-attachments/assets/6a5b2b79-728e-4766-9388-632e215959fa" />
+<img width="300" height="auto" alt="Signup" src="https://github.com/user-attachments/assets/f03d9ac1-b070-40bf-a39c-8c931dcd6e40" />
+<img width="300" height="auto" alt="FoodReservation" src="https://github.com/user-attachments/assets/e0ad4a8c-a4ff-4d36-88c9-ac301ee8c86f" />
+<img width="300" height="auto" alt="Requests" src="https://github.com/user-attachments/assets/a3b17ccc-e156-4e05-ae72-e49c0b79f784" />
+<img width="300" height="auto" alt="CourseList" src="https://github.com/user-attachments/assets/23053b49-064c-4c0c-aca8-f40a4caafa76" />
+<img width="300" height="auto" alt="Payments" src="https://github.com/user-attachments/assets/039e8d6f-f438-470f-9d72-91b1970fbb2c" />
 
-
-```text
-screenshots/
-├── login.png
-├── dashboard.png
-├── profile.png
-├── reservation.png
-└── payments.png
-```
 
 ---
 
